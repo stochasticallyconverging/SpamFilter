@@ -1,0 +1,2 @@
+# SpamFilter
+Basic Spam Filter
