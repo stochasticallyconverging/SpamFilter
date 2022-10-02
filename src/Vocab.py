@@ -33,10 +33,10 @@ class Vocab(bidict):
         for idx, i in enumerate(self._word_counts):
             self[i[0]] = idx
 
-    def encode(self, string: str, return_numpy: bool = False):
+    def encode(self, string: str):
         return [self[token] if token in self.keys() else 1 for token in string.lower().split(" ")]
     
-    def decode(self, integer: int, return_numpy: bool = False):
+    def decode(self, integer: int):
         return [self.inverse[integer] if integer in self.inverse.keys() else self.inverse[1]]
     
     def encode_to_numpy(self, string: str):
