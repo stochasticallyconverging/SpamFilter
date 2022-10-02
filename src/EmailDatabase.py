@@ -1,13 +1,11 @@
-import abc
-import email
-from email.message import Message
 from dataclasses import dataclass, asdict
-from typing import List, Dict, TypedDict
+from typing import List
 
 import pandas as pd
 
 
-from .Base import Email, Singleton
+from .Base import Email
+from .Vocab import Vocab
 
 '''
 {
@@ -26,14 +24,20 @@ from .Base import Email, Singleton
 class EmailDatabase:
     emails: List[Email]
 
-    def append(self, processed_email):
+    def append(self, processed_email: Email) -> None:
         self.emails.append(processed_email)
-
-    def to_pandas(self):
+    
+    def to_pandas(self) -> pd.DataFrame:
         return pd.DataFrame(asdict(self))
     
-    def __str__(self):
-        pass
+    def to_vocab(self) -> Vocab:
+        return Vocab(conn=self)
+
+
+
+    
+    
+
 
     
     

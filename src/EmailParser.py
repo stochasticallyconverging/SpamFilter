@@ -42,7 +42,7 @@ class PlainTextStrategy(EmailParsingStrategy):
 
 class TextHtmlStrategy(str):
     def parse_email(self, email_msg: Message) -> Email:
-        pass
+        parser = HTMLParser()
 
 class MultipartAlternativeStrategy(EmailParsingStrategy):
     def parse_email(self, email_msg: Message) -> Email:
