@@ -37,8 +37,6 @@ class bidict(dict):
 @dataclass
 class Email:
     con_type: str
-    subj: str
-    src: str
     body: str
 
 

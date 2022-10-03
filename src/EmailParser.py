@@ -1,6 +1,7 @@
 import abc
 from email.message import Message
-from html.parser import HTMLParser
+
+from bs4 import BeautifulSoup
 
 from .Base import Singleton, Email
 
@@ -9,8 +10,8 @@ EMAIL_REGEX = {"emails":"(?<name>[\\w.-]+)\\@(?<domain>[-\\w+\\.\\w+]+)(\\.\\w+)
                "url_no_prot":"/^[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/"}
 
 class EmailParser:
-    def __init__(self):
-        self._email_parsing_strategy = None
+    def __init__(self, email_parsing_strategy):
+        self._email_parsing_strategy = email_parsing_strategy
     
     @property
     def email_parsing_strategy(self) -> "EmailParsingStrategy":
@@ -35,31 +36,30 @@ class EmailParsingStrategy(abc.ABC, type(Singleton)):
         raise NotImplementedError
 
 
-class PlainTextStrategy(EmailParsingStrategy):
+class TextHtmlStrategy(EmailParsingStrategy):
     def parse_email(self, email_msg: Message) -> Email:
-        return Email(con_type=email_msg.get_content_type(), src=None, body=email_msg.get_payload())
+        return Email(
+            con_type=email_msg.get_content_type(), 
+            body=BeautifulSoup(
+                email_msg.get_payload(),
+                "html.parser").get_text(strip=True)
+        )
 
 
-class TextHtmlStrategy(str):
-    def parse_email(self, email_msg: Message) -> Email:
-        parser = HTMLParser()
+class TextPlainStrategy(EmailParsingStrategy):
 
-class MultipartAlternativeStrategy(EmailParsingStrategy):
     def parse_email(self, email_msg: Message) -> Email:
-        pass
+        return Email(
+            con_type = email_msg.get_content_type(),
+            body = email_msg.get_payload()
+        )
 
-class MultipartMixedStrategy(EmailParsingStrategy):
+class TextOtherStrategy(EmailParsingStrategy):
     def parse_email(self, email_msg: Message) -> Email:
-        pass
-
-class MultipartRelatedStrategy(EmailParsingStrategy):
-    def parse_email(self, email_msg: Message) -> Email:
-        pass
-
-class MultipartReportStrategy(EmailParsingStrategy):
-    def parse_email(self, email_msg: Message) -> Email:
-        pass
-
-class MultipartSignedStrategy(EmailParsingStrategy):
-    def parse_email(self, email_msg: Message) -> Email:
-        pass
+        return Email(
+            con_type = email_msg.get_content_type(),
+            body = BeautifulSoup(
+                email_msg.get_payload(),
+                "html.parser"
+            ).get_text(strip=True).replace("\n", " ").replace("\t", " ")
+        )
