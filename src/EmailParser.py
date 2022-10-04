@@ -3,7 +3,7 @@ from email.message import Message
 
 from bs4 import BeautifulSoup
 
-from .Base import Singleton, Email
+from .Base import Email
 
 
 class EmailParser:
@@ -52,5 +52,8 @@ class TextOtherStrategy(EmailParsingStrategy):
     def parse_email(self, email_msg: Message) -> Email:
         return Email(
             con_type = email_msg.get_content_type(),
-            body = email_msg.get_payload().replace("\n", " ").replace("\t", " ")
+            body = BeautifulSoup(
+                email_msg.get_payload(),
+                "html.parser"
+            ).get_text(strip=True).replace("\n", " ").replace("\t", " ")
         )

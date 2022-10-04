@@ -1,15 +1,4 @@
-import abc
-from typing import List, TypedDict
 from dataclasses import dataclass
-
-class Singleton(abc.ABC):
-    __instance = None
-
-    @classmethod
-    def __new__(cls, *args):
-        if cls.__instance is None:
-            cls.__instance = object.__new__(cls, *args)
-        return cls.__instance
 
 
 # From: https://stackoverflow.com/questions/3318625/how-to-implement-an-efficient-bidirectional-hash-table/21894086#21894086
@@ -31,8 +20,6 @@ class bidict(dict):
         if self[key] in self.inverse and not self.inverse[self[key]]:
             del self.inverse[self[key]]
         super(bidict, self).__delitem__(key)
-
-
 
 @dataclass
 class Email:
