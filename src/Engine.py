@@ -1,21 +1,23 @@
 import os
 import glob
 import email
+
+import pandas as pd
+
 from .EmailParser import EmailParser, TextHtmlStrategy, TextOtherStrategy, TextPlainStrategy
 from .EmailDatabase import EmailDatabase, Vocab
 
 class Engine:
     def __init__(self):
-        self.strategy_pool = {"text/html": TextHtmlStrategy(), 
+        self._strategy_pool = {"text/html": TextHtmlStrategy(), 
                               "text/plain": TextPlainStrategy(),
                               "text/other": TextOtherStrategy()}
-        self.parser = EmailParser()
-        self.email_db = EmailDatabase()
-        self._vocab = None
+        self._parser = EmailParser()
+        self._email_db = EmailDatabase()
     
     def run(self, data_dir, dir_names=["easy", "hard", "spam"]):
         self._read_emails(datapath=data_dir, dir_names=dir_names)
-        return self.email_db.to_pandas(), Vocab(conn=self.email_db)
+        return self._db_to_pandas(), self._db_to_vocab()
     
     
     def _read_emails(self, datapath, dir_names=["easy","hard","spam"]):
@@ -29,11 +31,20 @@ class Engine:
                     x = email.message_from_file(f)
                     if x.get_content_maintype() == "text":
                         try:
-                            self.parser.email_parsing_strategy = self.strategy_pool[x.get_content_type()]
+                            self._parser.email_parsing_strategy = self._strategy_pool[x.get_content_type()]
                         except KeyError:
-                            self.parser.email_parsing_strategy = self.strategy_pool["text/other"]
+                            self._parser.email_parsing_strategy = self._strategy_pool["text/other"]
                         spam = True if dirclass == "spam" else False
-                        self.email_db.append(self.parser.transform(x),spam)
+                        self._email_db.append(self._parser.transform(x),spam)
+
+    def _db_to_pandas(self):
+        res = {"spam": self._email_db.spam, "message": []}
+        for sub in self._email_db.emails:
+            res["message"].append(sub.body)
+        return pd.DataFrame(res)
+    
+    def _db_to_vocab(self):
+        return Vocab(conn=self._email_db)
 
 
     

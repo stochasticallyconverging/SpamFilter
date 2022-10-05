@@ -1,0 +1,61 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>640</x><y>360</y><w>270</w><h>120</h></coordinates><panel_attributes>EmailDatabase
+Module: EmailDatabase
+--
+- self.emails : List[Email]
+- self.spam : List[Bool]
+--
++ append(in email : Email, in spam : bool ) : None
++ to_pandas() : pd.DataFrame</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>110</y><w>150</w><h>50</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>130;10;10;30</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>100</y><w>150</w><h>30</h></coordinates><panel_attributes>/Pandas DataFrame/
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>280</y><w>100</w><h>70</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;50;80;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>200</x><y>330</y><w>360</w><h>140</h></coordinates><panel_attributes>Vocab
+Module: EmailDatabase
+--
+- conn : EmailDatabase
+- word_counts : Counter
+--
++ most_common(*args, **kwags) : tuple
++ encode(in string : str) : int
++ decode(in integer : int) : str
+- populate() : None
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>160</y><w>100</w><h>30</h></coordinates><panel_attributes>/dict/
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>180</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>220</y><w>210</w><h>60</h></coordinates><panel_attributes>bidict
+Module: Base
+--
++ inverse : dict
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>270</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>520</y><w>100</w><h>90</h></coordinates><panel_attributes>Email
+{dataclass}
+Module: Base
+--
++ con_type : str
++ body : str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>420</y><w>90</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>70;10;10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>630</x><y>140</y><w>290</w><h>150</h></coordinates><panel_attributes>Engine
+Module: Engine
+--
+- strategy_pool : dict
+- parser : EmailParser
+- email_db : EmailDatabase
+--
++ run(datapath : str) : (pd.DataFrame, Vocab)
+- read_emails(datapath : str) : None
+- db_to_pandas() : pd.DataFrame
+- db_to_vocab() : Vocab
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>280</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1010</x><y>170</y><w>280</w><h>110</h></coordinates><panel_attributes>EmailParser
+&lt;&lt;interface&gt;&gt;
+Module: EmailParser
+--
+- email_parsing_strategy : EmailParsingStrategy
+--
++ transform() : Email
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>510</y><w>280</w><h>80</h></coordinates><panel_attributes>TextPlainStrategy
+Module: EmailParser
+--
+# parse_email(in email_msg : Message) : Email</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>510</y><w>270</w><h>80</h></coordinates><panel_attributes>TextHtmlStrategy
+Module: EmailParser
+--
+# parse_email(in email_msg : Message) : Email</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1350</x><y>510</y><w>270</w><h>80</h></coordinates><panel_attributes>TextOtherStrategy
+Module: EmailParser
+--
+# parse_email(in email_msg : Message) : Email</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1000</x><y>340</y><w>270</w><h>80</h></coordinates><panel_attributes>EmailParsingStratetgy
+&lt;&lt;interface&gt;&gt;
+Module: EmailParser
+--
+# parse_email(in email_msg : Message) : Email</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1170</x><y>410</y><w>270</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;80;250;80;250;100</additional_attributes></element><element><id>Relation</id><coordinates><x>1170</x><y>410</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>950</x><y>410</y><w>250</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>230;10;230;80;10;80;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>1100</x><y>270</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>910</x><y>230</y><w>120</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;100;10;70;10</additional_attributes></element></diagram>

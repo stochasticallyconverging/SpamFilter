@@ -1,0 +1,41 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{epigraph}
+
+\renewcommand{\epigraphsize}{\small}
+
+\setlength{\epigraphwidth}{0.8\textwidth}
+
+\renewcommand{\textflush}{flushright} \renewcommand{\sourceflush}{flushright}
+
+\let\originalepigraph\epigraph 
+\renewcommand\epigraph[2]{\originalepigraph{\textit{#1}}{\textsc{#2}}}
+
+\author{Kevin Thompson}
+\title{Filtering Spam with Multinomial Naive Bayes}
+\begin{document}
+\maketitle
+
+
+
+\section{Introduction}
+Spam in communications irritate end users and pose a security risk for companies. Employees who do not realize they are interacting with spam may, for example, mindlessly click on attachments within the email and infect their computer with ransomware or other types of malware. An automated solution that filters out spam is therefore a necessary and highly pro-social technique. Since we are only concerned with classifying messages as "spam or "not spam", the spam filtering problem can be reduced to a binary classification problem, which is one of the most well-understood machine learning problems in artifical intelligence.
+
+I solve this problem by implementing an email parsing program that efficiently converts the the great diversity of email files into a uniform data representation and then fit a multinomial naive bayes algorithm using the provided text data.
+
+\section{Methodology}
+The solution is comprised of the following parts:
+\begin{enumerate}
+\item An email parsing engine dynamically assigns parsing strategies to different email formats in an efficient manner. The engine provides a vocabulary and a pandas dataframe.
+\item A count vectorizer from the Scikit-learn Package.
+\item A grid search crossvalidation object that searches for the optimal smoothing hyperparameter ($\alpha$) in the family of Multinomial Naive Bayes models.
+\item The model with the highest f1-score produced by the crossvalidation object is evaluated on test data to assess its performance.
+\end{enumerate}
+
+\subsection{Email Parsing Engine}
+The UML diagram representing 
+
+\end{document}
