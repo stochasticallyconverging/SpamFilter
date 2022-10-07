@@ -36,6 +36,14 @@ The solution is comprised of the following parts:
 \end{enumerate}
 
 \subsection{Email Parsing Engine}
-The UML diagram representing 
+
+The parsing engine takes a directory of email files and dynamically assigns a parsing strategy to each file at runtime. The files are parsed into an intermediate representation defined by the class "Email" that is stored in an "EmailDatabase" object. The Engine then takes the email objects and converts them into a vocabulary and a dataframe. The vocabulary is bi-directional dictionary that serves as an encoder and decoder for situations in which an alternative encoder is not available. For the naive bayes model used in this project, the scikit-learn "CountVectorizer" is used instead since bayes's rule relies on counts in the discrete setting.
+
+The Universal Modeling Language (UML) class diagram representig the email preprocessing program is shown in Figure 1 and the code that implements this program can be found in Appendix A1.
+
+\subsection{Multinomial Naive Bayes} 
+
+
+\section{Results}
 
 \end{document}

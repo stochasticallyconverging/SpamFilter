@@ -29,11 +29,10 @@ class EmailDatabase:
 
 class Vocab(bidict):
 
-    def __init__(self, conn: EmailDatabase, *args, **kwargs):
+    def __init__(self, df: pd.DataFrame, *args, **kwargs):
         super(Vocab, self).__init__(*args, **kwargs)
         self._word_counts = Counter({"<pad>":10000001,"<unk>":1000000})
-        self._conn = conn
-        self._populate()
+        self._populate(df)
 
     @property
     def word_counts(self):
@@ -42,13 +41,12 @@ class Vocab(bidict):
     def most_common(self, *args, **kwargs):
         return self._word_counts.most_common(*args, **kwargs)
 
-    def _iter(self):
-        df = self._conn.to_pandas()
+    def _iter(self, df: pd.DataFrame):
         for i in range(df.shape[0]):
             yield df.iloc[i,1].lower().split(" ")
 
-    def _populate(self) -> None:
-        for text in self._iter():
+    def _populate(self, df: pd.DataFrame) -> None:
+        for text in self._iter(df):
             for token in text:
                 self._word_counts[token] += 1
         for idx, i in enumerate(self._word_counts):

@@ -17,7 +17,9 @@ class Engine:
     
     def run(self, data_dir, dir_names=["easy", "hard", "spam"]):
         self._read_emails(datapath=data_dir, dir_names=dir_names)
-        return self._db_to_pandas(), self._db_to_vocab()
+        df = self._db_to_pandas()
+
+        return df, self._db_to_vocab(df)
     
     
     def _read_emails(self, datapath, dir_names=["easy","hard","spam"]):
@@ -43,8 +45,8 @@ class Engine:
             res["message"].append(sub.body)
         return pd.DataFrame(res)
     
-    def _db_to_vocab(self):
-        return Vocab(conn=self._email_db)
+    def _db_to_vocab(self, df: pd.DataFrame):
+        return Vocab(df=df)
 
 
     
